@@ -1,0 +1,9 @@
+<h1>Edit Link</h1>
+
+<%= render partial: "form", locals: { link: @link } %>
+
+<p>
+  <%= link_to 'Cancel', @link %>
+  or
+  <%= link_to 'Delete', @link, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %>
+</p>
