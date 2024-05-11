@@ -23,7 +23,7 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ${{ secrets.USER_NAME }}@${{ secrets.SSH_HOST }} '
           cd /home/ubuntu/ &&
-          su - deploy - c "cd ror-url-shortener &&
+          su - deploy -c "cd ror-url-shortener &&
           git reset --hard &&
           git checkout main &&
           git pull origin main &&
