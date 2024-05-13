@@ -7,22 +7,29 @@ class LinksTest < ActionDispatch::IntegrationTest
   end
 
   test "links index pagination" do
-    get links_path(page: 2)
+    get links_path
     assert_response :ok
   end
 
+  test "links index handles pagination overflow" do
+    Link.destroy_all
+    get links_path(page: 2)
+    assert_redirected_to root_path
+  end
+
   test "link show" do
-    get links_path(links(:anonymous))
+    get link_path(links(:anonymous))
     assert_response :ok
   end
 
   test "create link requires url" do
-    post links_path, params: { link: { url: "" } }
+    post links_path, params: {link: {url: ""}}
     assert_response :unprocessable_entity
   end
+
   test "create link as guest" do
     assert_difference "Link.count" do
-      post links_path(format: :turbo_stream), params: { link: { url: "https://google.com" } }
+      post links_path(format: :turbo_stream), params: {link: {url: "https://google.com"}}
       assert_response :ok
       assert_nil Link.last.user_id
     end
@@ -32,7 +39,7 @@ class LinksTest < ActionDispatch::IntegrationTest
     user = users(:one)
     sign_in user
     assert_difference "Link.count" do
-      post links_path(format: :turbo_stream), params: { link: { url: "https://google.com" } }
+      post links_path(format: :turbo_stream), params: {link: {url: "https://google.com"}}
       assert_response :ok
       assert_equal user.id, Link.last.user_id
     end
